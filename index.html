@@ -1,15 +1,37 @@
-1 item<br/>
-10 $<br/>
-tax 4.00%<br/>
-
 
 price: <input type="number" id="price" /> <br/>
+items: <input type="number" id="items" /> <br/>
+state: <input type="text" id="state" /> <br/>
 <input type="button" value="submit" onClick=submit() />
 
 <script>
+    var stateToTax = {
+        "UT" : 1.0685,
+        "NV" : 1.0800,
+        "TX" : 1.0625,
+        "AL" : 1.0400,
+        "CA" : 1.0825,
+    };
+
+    function calcDisc(value) {
+        if(value >= 15000) return value* (1-0.15);
+        if(value >= 10000) return value* (1-0.10);
+        if(value >= 7000) return value*(1-0.07);
+        if(value >= 5000) return value*(1-0.05);
+        if(value >= 1000) return value*(1-0.03);
+        return value;
+    }
+
     function submit() {
         price = document.getElementById("price").value;
-        document.getElementById("output").innerHTML = 1*price*1.0400;
+        items = document.getElementById("items").value;
+        state = document.getElementById("state").value;
+
+        value = items*price;
+        discVal = calcDisc(value);
+        totVal = discVal * stateToTax[state];
+
+        document.getElementById("output").innerHTML = '$' + totVal;
         
     }
     
